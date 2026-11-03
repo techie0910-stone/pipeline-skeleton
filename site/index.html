@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><title>할인 계산기</title></head>
+<body>
+  <h1>할인 계산기</h1>
+  <p>정가: <input id="price" value="10000"> 원</p>
+  <p>할인율: <input id="rate" value="20"> %</p>
+  <button onclick="calc()">계산</button>
+  <h2 id="result"></h2>
+  <script>
+    function calc() {
+      const price = Number(document.getElementById("price").value);
+      const rate = Number(document.getElementById("rate").value) / 100;
+      document.getElementById("result").textContent =
+        "할인가: " + Math.floor(price * (1 - rate)) + "원";
+    }
+  </script>
+</body>
+</html>

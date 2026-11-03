@@ -27,10 +27,16 @@ jobs:
   deploy-exploratory:
     needs: acceptance-test
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - run: |
-          echo "=== 탐색적 테스트 환경 배포 (시뮬레이션) ==="
-          echo "커밋 ${{ github.sha }} 배포 완료"
-          echo "접속: https://exploratory.example.internal"
-      - run: python app.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4
