@@ -1,0 +1,36 @@
+name: skeleton-pipeline
+
+on: [push]
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - run: pytest test_unit.py -v
+
+  acceptance-test:
+    needs: unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - run: pytest test_acceptance.py -v
+
+  deploy-exploratory:
+    needs: acceptance-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "=== 탐색적 테스트 환경 배포 (시뮬레이션) ==="
+          echo "커밋 ${{ github.sha }} 배포 완료"
+          echo "접속: https://exploratory.example.internal"
+      - run: python app.py
